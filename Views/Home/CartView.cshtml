@@ -1,0 +1,39 @@
+﻿@model ProjektASPNET.Models.OrdersModel
+@{
+    ViewBag.Title = "CartView";
+}
+
+<h2>Twój koszyk</h2>
+
+<table>
+    <tr>
+        <th>
+            Nazwa
+        </th>
+        <th>
+            Opis
+        </th>
+        <th>
+            Cena
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Products)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                @item.Price
+            </td>
+            <td> 
+                @Html.ActionLink("Usuń z koszyka", "DeleteFromCart", new {UserID = Model.ID, ProductId = item.ID})
+                <button formmethod="post" value="delete">Usuń z kosza</button>
+            </td>
+        </tr>
+    }
+</table>
