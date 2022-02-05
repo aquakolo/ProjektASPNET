@@ -1,0 +1,30 @@
+﻿@model ProjektASPNET.Models.HomeModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Home Page</h2>
+
+<form method="POST">
+    <div id="login">
+        <button>Zaloguj się!</button>
+        <button>Zarejestruj się!</button>
+    </div>
+    <div id="account">
+        <button>Moje konto</button>
+    </div>
+
+    <br><br>
+
+    TUTAJ BĘDĄ PRZEDMIOTY.
+
+    <div id="table">@Html.Raw(@Model.HtmlTable)</div>
+
+    <script id="show login or account">
+        var userRole = @Html.Raw(Json.Encode(Model.UserRole));
+        if (userRole != "NotLogged")
+            document.getElementById("login").innerHTML = "";
+        else
+            document.getElementById("account").innerHTML = "";
+    </script>
+</form>

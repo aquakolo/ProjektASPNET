@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ProjektASPNET.Models.ProductModel>
+@{
+    ViewBag.Title = "ProductsView";
+}
+
+<h2>ProductsView</h2>
+
+
+<table>
+        <tr>
+            <th>
+                ID zamówienia
+            </th>
+            <th>
+                Nazwa
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Cena
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID })
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "ProductEdit", new { id = item.ID })
+                </td>
+                <td>
+                    @Html.ActionLink("Usuń", "ProductDelete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </table>
+    @Html.ActionLink("Dodaj nowy produkt", "ProductAdd")

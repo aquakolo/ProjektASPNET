@@ -1,0 +1,8 @@
+﻿@model IEnumerable<ProjektASPNET.Models.ActionLinkModel>
+
+<div style="width: 100%">
+    @foreach (var order in Model)
+    {
+        @Html.ActionLink(order.Text, order.View);
+    }
+</div>

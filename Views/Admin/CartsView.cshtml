@@ -1,0 +1,74 @@
+﻿@model IEnumerable<ProjektASPNET.Models.OrdersModel>
+@{
+    ViewBag.Title = "CartsView";
+}
+
+<h2>CartsView</h2>
+
+<table>
+    <tr>
+        <th>
+            ID zamówienia
+        </th>
+        <th>
+            Użytkownik
+        </th>
+        <th>
+            Sumaryczna cena
+        </th>
+    </tr>
+
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelOrder => order.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelOrder => order.User)
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <th>
+                            ID zamówienia
+                        </th>
+                        <th>
+                            Nazwa
+                        </th>
+                        <th>
+                            Opis
+                        </th>
+                        <th>
+                            Cena
+                        </th>
+                    </tr>
+
+                    @foreach (var item in order.Products)
+                    {
+                        <tr>
+                            <td>
+                                @item.ID
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Description
+                            </td>
+                            <td>
+                                @item.Price
+                            </td>
+                            <td>
+                                @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td>
+                @Html.DisplayFor(modelOrder => order.TotalPrice)
+            </td>
+        </tr>
+    }
+</table>

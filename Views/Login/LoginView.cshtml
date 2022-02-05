@@ -1,0 +1,23 @@
+﻿@model ProjektASPNET.Models.LoginModel
+@{
+    ViewBag.Title = "LoginView";
+}
+
+<div id="registrationMessage"></div>
+@ViewBag.Message
+<h2>Login Page</h2>
+
+<form method="POST">
+    <div>
+        Login: @Html.TextBoxFor(m => m.Login)
+    </div>
+    <div>
+        Hasło: @Html.PasswordFor(m => m.Password)
+    </div>
+    <div>
+        @Html.ValidationSummary()
+    </div>
+    <div>
+        <button>Zaloguj!</button>
+    </div>
+</form>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ProjektASPNET.Models.UserModel>
+    @{
+    ViewBag.Title = "UsersView";
+    }
+
+    <h2>UsersView</h2>
+
+    <form method="POST">
+        <h2>OrdersView</h2>
+
+        <table>
+            <tr>
+                <th>
+                    ID zamówienia
+                </th>
+                <th>
+                    Użytkownik
+                </th>
+                <th>
+                    Rola
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.ActionLink("Zobacz", "UserSeen", new { id = item.ID })
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "UserEdit", new { id = item.ID })
+            </td>
+        </tr>
+        }
+        </table>
+    </form>
