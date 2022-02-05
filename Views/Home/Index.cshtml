@@ -59,7 +59,8 @@
             <td>
                 @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) != "NotLogged")
                 {
-                    @Html.ActionLink("Dodaj do koszyka", "ProductSeen", new { id = item.ID })
+                    //@Html.ActionLink("Dodaj do koszyka", "CartView", new { id = item.ID })
+                    <button type="button" onclick='window.location = "@Url.Action("Index", "Home",  item.ID)"'></button>;
                 }
             </td>
         </tr>

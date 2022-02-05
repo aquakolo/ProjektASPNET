@@ -1,7 +1,10 @@
-﻿
+﻿ProjektASPNET.Models.ProductModel
+@using ProjektASPNET.Helpers
 @{
-    ViewBag.Title = "DeleteFromCartView";
+ViewBag.Title = "DeleteFromCartView";
 }
 
-<h2>DeleteFromCartView</h2>
+<h2>Czy jesteś pewnien/pewna że chcesz usunąć ten produkt?</h2>
 
+<button formmethod="post">Tak</button>
+@Html.ActionLink("Nie", "CartView")

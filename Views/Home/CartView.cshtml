@@ -31,7 +31,7 @@
                 @item.Price
             </td>
             <td> 
-                @Html.ActionLink("Usuń z koszyka", "DeleteFromCart", new {UserID = Model.ID, ProductId = item.ID})
+                @Html.ActionLink("Usuń z koszyka", "DeleteFromCartView", new {ProductId = item.ID})
                 <button formmethod="post" value="delete">Usuń z kosza</button>
             </td>
         </tr>
