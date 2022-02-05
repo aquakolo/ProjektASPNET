@@ -5,41 +5,46 @@
 
 <h2>UsersView</h2>
 
-<form method="POST">
-    <h2>OrdersView</h2>
+<div style="width: 100%">
+    @Html.ActionLink("Strona główna", "../Home/Index");
+    @Html.ActionLink("Lista zamówień", "../Admin/OrdersView");
+    @Html.ActionLink("Lista produktów", "../Admin/ProductsView");
+    @Html.ActionLink("Lista koszyków", "../Admin/CartsView");
+</div>
 
-    <table>
+<h2>OrdersView</h2>
+
+<table>
+    <tr>
+        <th>
+            ID zamówienia
+        </th>
+        <th>
+            Użytkownik
+        </th>
+        <th>
+            Rola
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                ID zamówienia
-            </th>
-            <th>
-                Użytkownik
-            </th>
-            <th>
-                Rola
-            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.ActionLink("Zobacz", "UserSeen", new { id = item.ID })
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "UserEdit", new { id = item.ID })
+            </td>
         </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Login)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role)
-                </td>
-                <td>
-                    @Html.ActionLink("Zobacz", "UserSeen", new { id = item.ID })
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "UserEdit", new { id = item.ID })
-                </td>
-            </tr>
-        }
-    </table>
-</form>
+    }
+</table>

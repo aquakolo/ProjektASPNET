@@ -97,13 +97,11 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlTableBuilder.cs" />
     <Compile Include="Helpers\DBHelper.cs" />
-    <Compile Include="Models\ActionLinkModel.cs" />
     <Compile Include="Models\OrdersModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -127,7 +125,6 @@
     <Content Include="Views\Admin\ProductDelete.cshtml" />
     <Content Include="Views\Admin\ProductAdd.cshtml" />
     <Content Include="Views\Admin\CartsView.cshtml" />
-    <Content Include="Views\Shared\Header.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
