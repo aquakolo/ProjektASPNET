@@ -7,8 +7,7 @@ namespace ProjektASPNET.Models
 {
     public class HomeModel
     {
-        public int ID { get; set; }
-        public string UserRole { get; set; }
-        public string HtmlTable { get; set; }
+        public List<ProductModel> Products { get; set; }
+        public string Search { get; set; }
     }
 }

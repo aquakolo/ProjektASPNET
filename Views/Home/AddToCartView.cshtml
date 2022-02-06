@@ -1,0 +1,23 @@
+﻿@model ProjektASPNET.Models.ProductModel
+@{
+    ViewBag.Title = "AddToCartView";
+}
+
+    <h2>Czy na pewno chcesz dodać produkt do koszyka?</h2>
+<form method="post">
+    <div>
+        Nazwa: @Model.Name
+    </div>
+    <div>
+        Opis: @Model.Description
+    </div>
+    <div>
+        Cena: @Model.Price
+    </div>
+    <div>
+        <button>Tak</button>
+    </div>
+    <div>
+        @Html.ActionLink("Powrót", "Index")
+    </div>
+</form>

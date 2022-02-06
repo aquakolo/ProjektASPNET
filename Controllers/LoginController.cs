@@ -1,8 +1,11 @@
-﻿using ProjektASPNET.Helpers;
+﻿//using Microsoft.IdentityModel.Web;
+using ProjektASPNET.Helpers;
 using ProjektASPNET.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+//using System.IdentityModel.Services;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,7 +16,7 @@ namespace ProjektASPNET.Controllers
         // GET: Login
         public ActionResult LoginView(string registered = null)
         {
-            if (registered == "true") 
+            if (registered == "true")
                 @ViewBag.Message = "Zarejestrowano pomyślnie";
 
             LoginModel model = new LoginModel();
@@ -29,9 +32,19 @@ namespace ProjektASPNET.Controllers
                 string role = DB.GetUserRole(model); // Helpers
                 if (role != "NotLogged")
                 {
-                    HomeModel user = new HomeModel{ ID = 123, UserRole = role };
-                    // ciasteczko user musi być przekazany w ciastku
-                    return RedirectToAction("../Home/Index"); // return tam, skąd przyszli bądź do strony głównej
+                    /*
+                    var identity = new ClaimsIdentity("userIdentity");
+                    identity.AddClaim(new Claim(ClaimTypes.Name, model.Login));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, role));
+                    var principal = new ClaimsPrincipal(identity);
+                    SessionAuthenticationModule sam = FederatedAuthentication.SessionAuthenticationModule;
+                    var token = sam.CreateSessionSecurityToken(principal,
+                        string.Empty, DateTime.Now.ToUniversalTime(), DateTime.Now.AddMinutes(20).ToUniversalTime(), false);
+                    sam.WriteSessionTokenToCookie(token);
+                    */
+
+
+                    return RedirectToAction("../Home/Index");
 
                 }
 
@@ -58,7 +71,7 @@ namespace ProjektASPNET.Controllers
                 {
                     return RedirectToAction("LoginView", new { registered = "true" });
                 }
-                if(register == RegisterStatus.LoginAlreadyTaken)
+                if (register == RegisterStatus.LoginAlreadyTaken)
                 {
                     ModelState.AddModelError("", "Taki login już istnieje.");
                 }

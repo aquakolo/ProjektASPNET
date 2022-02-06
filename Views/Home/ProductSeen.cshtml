@@ -3,17 +3,9 @@
     ViewBag.Title = "ProductSeen";
 }
 
-<h2>ProductSeen</h2>
+<h2>ProductSeen</h2> 
 
 <table>
-    <tr>
-        <td>
-            Id produktu:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.ID)
-        </td>
-    </tr>
     <tr>
         <td>
             Nazwa:
@@ -39,6 +31,6 @@
         </td>
     </tr>
     <tr>
-        @Html.ActionLink("Cofnij", "ProductsView")
+        @Html.ActionLink("Powrót", "Index")
     </tr>
 </table>

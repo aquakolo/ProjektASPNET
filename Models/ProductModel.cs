@@ -10,7 +10,8 @@ namespace ProjektASPNET.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public long Price { get; set; }
+        public int Price { get; set; }
 
+        public bool Hide { get; set; }
     }
 }

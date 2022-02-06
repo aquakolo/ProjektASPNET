@@ -8,7 +8,7 @@ namespace ProjektASPNET.Models
     public class OrdersModel
     {
         public int ID { get; set; }
-        public string User { get; set; }
+        public int User { get; set; }
         public List<ProductModel> Products { get; set; }
         public double TotalPrice { get; set; }
     }

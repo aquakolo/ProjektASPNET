@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ProjektASPNET.Models.ProductModel>
+﻿@model ProjektASPNET.Models.HomeModel
 @using ProjektASPNET.Helpers
 @{
     ViewBag.Title = "Index";
@@ -10,7 +10,8 @@
 <div style="width: 100%">
     @Html.ActionLink("Strona główna", "../Home/Index")
 
-    @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) == "Admin") {
+    @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) == "Admin")
+    {
         Html.ActionLink("Lista zamówień", "../Admin/OrdersView");
         Html.ActionLink("Lista użytkowników", "../Admin/UsersView");
         Html.ActionLink("Lista koszyków", "../Admin/CartsView");
@@ -26,8 +27,11 @@
 
 
 
-<br>
-
+<form method="POST">
+    <br>
+    Wyszukaj produktów: @Html.TextBoxFor(m => m.Search)
+    <br>
+</form>
 <table>
     <tr>
         <th>
@@ -41,7 +45,7 @@
         </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Products)
     {
         <tr>
             <td>
@@ -54,16 +58,16 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID })
+                @Html.ActionLink("Zobacz", "ProductSeen", new { productId = item.ID })
             </td>
             <td>
-                @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) != "NotLogged")
-                {
-                    //@Html.ActionLink("Dodaj do koszyka", "CartView", new { id = item.ID })
-                    <button type="button" onclick='window.location = "@Url.Action("Index", "Home",  item.ID)"'></button>;
-                }
+
+                @Html.ActionLink("Dodaj do koszyka", "AddToCartView", new { id = item.ID })
             </td>
         </tr>
     }
 </table>
+<div>
+    @Html.ActionLink("Podsumowanie koszyka", "CartView")
+</div>
 

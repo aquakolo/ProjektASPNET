@@ -44,6 +44,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="microsoft.identitymodel, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.IdentityModel.7.0.0\lib\net35\microsoft.identitymodel.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -120,13 +123,14 @@
     <Content Include="Views\Admin\ProductsView.cshtml" />
     <Content Include="Views\Admin\UsersView.cshtml" />
     <Content Include="Views\Admin\OrdersView.cshtml" />
-    <Content Include="Views\Admin\ProductSeen.cshtml" />
-    <Content Include="Views\Admin\ProductEdit.cshtml" />
+    <Content Include="Views\Home\ProductSeen.cshtml" />
     <Content Include="Views\Admin\ProductDelete.cshtml" />
     <Content Include="Views\Admin\ProductAdd.cshtml" />
     <Content Include="Views\Admin\CartsView.cshtml" />
     <Content Include="Views\Home\CartView.cshtml" />
     <Content Include="Views\Home\DeleteFromCartView.cshtml" />
+    <Content Include="Views\Home\AddToCartView.cshtml" />
+    <Content Include="Views\Admin\ProductSeen.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

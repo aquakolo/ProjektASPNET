@@ -69,6 +69,19 @@ namespace ProjektASPNET.Helpers
             return models;
         }
 
+        public ProductModel GetProduct(int id)
+        {
+            var products = GetProducts();
+            foreach (var product in products)
+            {
+                if (product.ID == id)
+                {
+                    return product;
+                }
+            }
+            return new ProductModel();
+        }
+
         public List<LoginModel> GetUsers()
         {
             return dummyUsers;
@@ -76,7 +89,111 @@ namespace ProjektASPNET.Helpers
 
         public List<OrdersModel> GetOrders()
         {
-            return new List<OrdersModel>();
+            return dummyOrders;
+        }
+
+        public List<OrdersModel> GetCarts()
+        {
+            return dummyCarts;
+        }
+
+        public OrdersModel GetUserCart(int userId)
+        {
+            var carts = GetCarts();
+            foreach (var cart in carts)
+            {
+                if (cart.User == userId)
+                {
+                    return cart;
+                }
+            }
+            return new OrdersModel { User=userId, Products = new List<ProductModel>(), TotalPrice = 0 };
+        }
+
+        public void AddToCart(int userId, ProductModel product)
+        {
+            var carts = GetCarts();
+            foreach (var cart in carts)
+            {
+                if (cart.User == userId)
+                {
+                    cart.Products.Add(product);
+                    cart.TotalPrice += product.Price;
+                    return;
+                }
+            }
+            var n = new OrdersModel { ID = 0, User = userId, Products = new List<ProductModel>(), TotalPrice = 0 };
+            n.Products.Add(product);
+            n.TotalPrice = product.Price;
+            carts.Add(n);
+        }
+
+        static int lastId = 5;
+        public void AddProduct(ProductModel product)
+        {
+            product.ID = lastId++;
+            dummyProducts.Add(product);
+        }
+
+        public void DeleteProduct(int productId)
+        {
+            foreach(ProductModel prod in GetProducts())
+            {
+                if (prod.ID == productId)
+                {
+                    prod.Hide = true;
+                    return;
+                }
+            }
+        }
+
+        public void removeFromCart(int userId, ProductModel product)
+        {
+            OrdersModel model = null;
+            var carts = GetCarts();
+            foreach (var cart in carts)
+            {
+                if (cart.User == userId)
+                {
+                    model = cart;
+                }
+            }
+
+            for (int i = 0; i < model.Products.Count; i++)
+            {
+                if (product.ID == model.Products[i].ID)
+                {
+                    model.Products.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
+        public void removeFromCart(int userId, int id)
+        {
+            OrdersModel model = null;
+            var carts = GetCarts();
+            foreach (var cart in carts)
+            {
+                if (cart.User == userId)
+                {
+                    model = cart;
+                }
+            }
+
+            for (int i = 0; i < model.Products.Count; i++)
+            {
+                if (id == model.Products[i].ID)
+                {
+                    model.Products.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
+        public string getUserNameFromId(int userId)
+        {
+            return dummyUsers[userId].Login;
         }
 
         private void AddUserToDatabase(LoginModel userData)
@@ -100,5 +217,9 @@ namespace ProjektASPNET.Helpers
             new ProductModel { ID = 3, Name = "Palma japońska", Description = "ładna palma doniczkowa do twojego domu", Price = 5000},
             new ProductModel { ID = 4, Name = "Figurka Matki Boskiej", Description = "Figurka Matki Boskiej, podświetlana LED RGB", Price = 9599}
         };
+
+        private List<OrdersModel> dummyCarts = new List<OrdersModel>();
+
+        private List<OrdersModel> dummyOrders = new List<OrdersModel>();
     }
 }
