@@ -1,82 +1,48 @@
 ﻿@model IEnumerable<ProjektASPNET.Models.OrdersModel>
 
-@{
-    ViewBag.Title = "Lista zamówień";
-}
-
-<h2>Lista zamówień</h2>
-
-<div style="width: 100%">
-    @Html.ActionLink("Strona główna", "../Home/Index")
-    @Html.ActionLink("Lista użytkowników", "../Admin/UsersView")
-    @Html.ActionLink("Lista produktów", "../Admin/ProductsView")
-    @Html.ActionLink("Lista koszyków", "../Admin/CartsView")
-</div>
-
-<table>
-    <tr>
-        <th>
-            ID zamówienia
-        </th>
-        <th>
-            Użytkownik
-        </th>
-        <th>
-            Sumaryczna cena
-        </th>
-    </tr>
-
-    @foreach (var order in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelOrder => order.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelOrder => order.User)
-            </td>
-            <td>
-                <table>
-                    <tr>
-                        <th>
-                            ID zamówienia
-                        </th>
-                        <th>
-                            Nazwa
-                        </th>
-                        <th>
-                            Opis
-                        </th>
-                        <th>
-                            Cena
-                        </th>
-                    </tr>
-
-                    @foreach (var item in order.Products)
-                    {
-                        <tr>
-                            <td>
-                                @item.ID
-                            </td>
-                            <td>
-                                @item.Name
-                            </td>
-                            <td>
-                                @item.Description
-                            </td>
-                            <td>
-                                @item.Price
-                            </td>
-                            <td>
-                                @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID })
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </td>
-            <td>
-                @Html.DisplayFor(modelOrder => order.TotalPrice)
-            </td>
-        </tr>
+    @{
+    ViewBag.Title = "OrdersView";
     }
-</table>
+
+<form method="POST">
+    <h2>OrdersView</h2>
+
+    <table>
+        <tr>
+            <th>
+                ID zamówienia
+            </th>
+            <th>
+                Użytkownik
+            </th>
+            <th>
+                Status zamówienia
+            </th>
+            <th>
+                Sumaryczna cena
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+                <td>
+                    @Html.ActionLink("Zobacz", "OrderSeen", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </table>
+</form>

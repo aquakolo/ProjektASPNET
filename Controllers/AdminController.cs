@@ -20,13 +20,6 @@ namespace ProjektASPNET.Controllers
             return View(OrdersList);
         }
 
-        public ActionResult CartsView()
-        {
-            var DB = DBHelper.GetInstance();
-            var CartsList = new List<OrdersModel>();//DB.GetCarts();
-            return View(CartsList);
-        }
-
         public ActionResult UsersView()
         {
             var DB = DBHelper.GetInstance();
@@ -39,6 +32,36 @@ namespace ProjektASPNET.Controllers
             var DB = DBHelper.GetInstance();
             var ProductsList = DB.GetProducts();
             return View(ProductsList);
+        }
+
+        public ActionResult OrderSeen(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var DB = DBHelper.GetInstance();
+            OrdersModel order = null;// DB.GetOrder(id);
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+            return View(order);
+        }
+
+        public ActionResult UserSeen(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var DB = DBHelper.GetInstance();
+            UserModel user = null;//DB.GetUser(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
         }
 
         public ActionResult ProductSeen(int? id)
@@ -54,75 +77,6 @@ namespace ProjektASPNET.Controllers
                 return HttpNotFound();
             }
             return View(product);
-        }
-
-        public ActionResult ProductEdit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var DB = DBHelper.GetInstance();
-            ProductModel product = null;// DB.GetProduct(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        [HttpPost]
-        public ActionResult ProductEdit(ProductModel product)
-        {
-            var DB = DBHelper.GetInstance();
-            //DB.DeleteProduct(product.ID)
-            //product.ID = DB.GetNewID();
-            //DB.AddProduct(product);
-            return View(product);
-        }
-
-        public ActionResult ProductDelete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var DB = DBHelper.GetInstance();
-            ProductModel product = null;// DB.GetProduct(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        [HttpPost]
-        [ActionName("ProductDelete")]
-        public ActionResult ProductDeletePost(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var DB = DBHelper.GetInstance();
-            //DB.DeleteProduct(product.ID)
-            return RedirectToAction("ProductsView");
-        }
-
-        public ActionResult ProductAdd()
-        {
-            var DB = DBHelper.GetInstance();
-            ProductModel product = new ProductModel();
-            product.ID = 0;//DB.GetNewID();
-            return View(product);
-        }
-
-        [HttpPost]
-        public ActionResult ProductAdd(ProductModel product)
-        {
-            var DB = DBHelper.GetInstance();
-            //DB.AddProduct(product);
-            return RedirectToAction("ProductsView");
         }
     }
 }

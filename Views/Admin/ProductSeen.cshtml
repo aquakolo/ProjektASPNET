@@ -1,44 +1,6 @@
-﻿@model ProjektASPNET.Models.ProductModel
+﻿
 @{
     ViewBag.Title = "ProductSeen";
 }
 
 <h2>ProductSeen</h2> 
-
-<table>
-    <tr>
-        <td>
-            Id zamówienia:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.ID)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Nazwa:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.Name)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Opis:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.Description)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Cena:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.Price)
-        </td>
-    </tr>
-    <tr>
-        @Html.ActionLink("Cofnij", "ProductsView")
-    </tr>
-</table>

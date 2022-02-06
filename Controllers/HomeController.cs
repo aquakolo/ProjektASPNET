@@ -10,16 +10,46 @@ namespace ProjektASPNET.Controllers
 {
     public class HomeController : Controller
     {
+        private string ConvertPriceToString(long price)
+        {
+            var str = price.ToString();
+            return str.Substring(0, str.Length - 2) + "," + str.Substring(str.Length - 2, 2) + "zł";
+        }
+        private string CreateProductsTable(bool isAuthorized)
+        {
+            var elemList = DBHelper.GetInstance().GetProducts();
+
+            var tableBuilder = new HtmlTableBuilder();
+            if (isAuthorized)
+                tableBuilder.setHeader(new List<string>{"Nazwa", "Opis", "Cena", "Zobacz", "Dodaj do koszyka"});
+            else
+                tableBuilder.setHeader(new List<string> { "Nazwa", "Opis", "Cena", "Zobacz" });
+
+            foreach (var elem in elemList)
+            {
+                var rowBulder = new HTMLTableRowBuilder();
+                rowBulder.addText(elem.Name);
+                rowBulder.addText(elem.Description);
+                rowBulder.addText(ConvertPriceToString(elem.Price));
+                rowBulder.addButton("Zobacz", "zobaczButton", elem.ID.ToString());
+                if (isAuthorized)
+                    rowBulder.addButton("Dodaj do koszyka", "dodajDoKoszykaButton", elem.ID.ToString());
+
+                tableBuilder.addRow(rowBulder);
+            }
+
+            var str = tableBuilder.create();
+            return str;
+        }
         // niezalogowany
         public ActionResult Index()
         {
-            List<ProductModel> model = DBHelper.GetInstance().GetProducts();
-            return View(model);
-        }
+            HomeModel model = new HomeModel();
+            model.UserRole = "NotLogged";
 
-        [HttpPost]
-        public ActionResult Index(int productId)
-        {
+            string table = CreateProductsTable(false);
+
+            model.HtmlTable = table;
             return View(model);
         }
 
@@ -28,30 +58,6 @@ namespace ProjektASPNET.Controllers
         public ActionResult Index(HomeModel model)
         {
             return View(model);
-        }
-
-        public ActionResult CartView()
-        {
-            //var SessionHelper = ProjektASPNET.Helpers.SessionHelper.GetInstance(); 
-            var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
-            var cart = new OrdersModel();// DB.GetCart(SessionHelper.GetUserID());
-            return View(cart);
-        }
-
-        public ActionResult DeleteFromCartView(int productID)
-        { 
-            var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
-            var product = new ProductModel();//DB.GetProduct(productID);
-            return View(product);
-        }
-
-        [HttpPost]
-        public ActionResult DeleteFromCartView(ProductModel model)
-        {
-            //var SessionHelper = ProjektASPNET.Helpers.SessionHelper.GetInstance();
-            // usuwanie z bazy danych
-
-            return RedirectToAction("CartView");
         }
     }
 }

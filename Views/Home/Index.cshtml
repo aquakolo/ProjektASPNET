@@ -1,69 +1,30 @@
-﻿@model IEnumerable<ProjektASPNET.Models.ProductModel>
-@using ProjektASPNET.Helpers
+﻿@model ProjektASPNET.Models.HomeModel
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Home Page</h2>
 
+<form method="POST">
+    <div id="login">
+        <button>Zaloguj się!</button>
+        <button>Zarejestruj się!</button>
+    </div>
+    <div id="account">
+        <button>Moje konto</button>
+    </div>
 
-<div style="width: 100%">
-    @Html.ActionLink("Strona główna", "../Home/Index")
+    <br><br>
 
-    @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) == "Admin") {
-        Html.ActionLink("Lista zamówień", "../Admin/OrdersView");
-        Html.ActionLink("Lista użytkowników", "../Admin/UsersView");
-        Html.ActionLink("Lista koszyków", "../Admin/CartsView");
-        Html.ActionLink("Lista produktów", "../Admin/ProductsView");
-    }
+    TUTAJ BĘDĄ PRZEDMIOTY.
 
-    @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) == "NotLogged")
-    {
-        Html.ActionLink("Login", "../Login/LoginView");
-        Html.ActionLink("Register", "../Login/RegisterView");
-    }
-</div>
+    <div id="table">@Html.Raw(@Model.HtmlTable)</div>
 
-
-
-<br>
-
-<table>
-    <tr>
-        <th>
-            Nazwa
-        </th>
-        <th>
-            Opis
-        </th>
-        <th>
-            Cena
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID })
-            </td>
-            <td>
-                @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) != "NotLogged")
-                {
-                    //@Html.ActionLink("Dodaj do koszyka", "CartView", new { id = item.ID })
-                    <button type="button" onclick='window.location = "@Url.Action("Index", "Home",  item.ID)"'></button>;
-                }
-            </td>
-        </tr>
-    }
-</table>
-
+    <script id="show login or account">
+        var userRole = @Html.Raw(Json.Encode(Model.UserRole));
+        if (userRole != "NotLogged")
+            document.getElementById("login").innerHTML = "";
+        else
+            document.getElementById("account").innerHTML = "";
+    </script>
+</form>

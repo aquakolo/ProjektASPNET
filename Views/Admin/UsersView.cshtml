@@ -1,34 +1,28 @@
 ﻿@model IEnumerable<ProjektASPNET.Models.UserModel>
-@{
+    @{
     ViewBag.Title = "UsersView";
-}
+    }
 
-<h2>UsersView</h2>
+    <h2>UsersView</h2>
 
-<div style="width: 100%">
-    @Html.ActionLink("Strona główna", "../Home/Index")
-    @Html.ActionLink("Lista zamówień", "../Admin/OrdersView")
-    @Html.ActionLink("Lista produktów", "../Admin/ProductsView")
-    @Html.ActionLink("Lista koszyków", "../Admin/CartsView")
-</div>
+    <form method="POST">
+        <h2>OrdersView</h2>
 
-<h2>OrdersView</h2>
+        <table>
+            <tr>
+                <th>
+                    ID zamówienia
+                </th>
+                <th>
+                    Użytkownik
+                </th>
+                <th>
+                    Rola
+                </th>
+            </tr>
 
-<table>
-    <tr>
-        <th>
-            ID zamówienia
-        </th>
-        <th>
-            Użytkownik
-        </th>
-        <th>
-            Rola
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+            @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ID)
@@ -46,5 +40,6 @@
                 @Html.ActionLink("Edit", "UserEdit", new { id = item.ID })
             </td>
         </tr>
-    }
-</table>
+        }
+        </table>
+    </form>
