@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ProjektASPNET.Models
 {
-    public class OrdersModel
+    public class OrderModel
     {
         public int ID { get; set; }
         public int User { get; set; }

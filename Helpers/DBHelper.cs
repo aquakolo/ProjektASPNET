@@ -87,17 +87,17 @@ namespace ProjektASPNET.Helpers
             return dummyUsers;
         }
 
-        public List<OrdersModel> GetOrders()
+        public List<OrderModel> GetOrders()
         {
             return dummyOrders;
         }
 
-        public List<OrdersModel> GetCarts()
+        public List<OrderModel> GetCarts()
         {
             return dummyCarts;
         }
 
-        public OrdersModel GetUserCart(int userId)
+        public OrderModel GetUserCart(int userId)
         {
             var carts = GetCarts();
             foreach (var cart in carts)
@@ -107,7 +107,7 @@ namespace ProjektASPNET.Helpers
                     return cart;
                 }
             }
-            return new OrdersModel { User=userId, Products = new List<ProductModel>(), TotalPrice = 0 };
+            return new OrderModel { User=userId, Products = new List<ProductModel>(), TotalPrice = 0 };
         }
 
         public void AddToCart(int userId, ProductModel product)
@@ -122,7 +122,7 @@ namespace ProjektASPNET.Helpers
                     return;
                 }
             }
-            var n = new OrdersModel { ID = 0, User = userId, Products = new List<ProductModel>(), TotalPrice = 0 };
+            var n = new OrderModel { ID = 0, User = userId, Products = new List<ProductModel>(), TotalPrice = 0 };
             n.Products.Add(product);
             n.TotalPrice = product.Price;
             carts.Add(n);
@@ -149,7 +149,7 @@ namespace ProjektASPNET.Helpers
 
         public void removeFromCart(int userId, ProductModel product)
         {
-            OrdersModel model = null;
+            OrderModel model = null;
             var carts = GetCarts();
             foreach (var cart in carts)
             {
@@ -171,7 +171,7 @@ namespace ProjektASPNET.Helpers
 
         public void removeFromCart(int userId, int id)
         {
-            OrdersModel model = null;
+            OrderModel model = null;
             var carts = GetCarts();
             foreach (var cart in carts)
             {
@@ -218,8 +218,8 @@ namespace ProjektASPNET.Helpers
             new ProductModel { ID = 4, Name = "Figurka Matki Boskiej", Description = "Figurka Matki Boskiej, podświetlana LED RGB", Price = 9599}
         };
 
-        private List<OrdersModel> dummyCarts = new List<OrdersModel>();
+        private List<OrderModel> dummyCarts = new List<OrderModel>();
 
-        private List<OrdersModel> dummyOrders = new List<OrdersModel>();
+        private List<OrderModel> dummyOrders = new List<OrderModel>();
     }
 }

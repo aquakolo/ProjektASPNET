@@ -105,7 +105,7 @@
     </Compile>
     <Compile Include="Helpers\HtmlTableBuilder.cs" />
     <Compile Include="Helpers\DBHelper.cs" />
-    <Compile Include="Models\OrdersModel.cs" />
+    <Compile Include="Models\OrderModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
