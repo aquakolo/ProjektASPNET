@@ -44,7 +44,7 @@ namespace ProjektASPNET.Helpers
                 if (userData.Login == user.Login)
                     return RegisterStatus.LoginAlreadyTaken;
 
-            AddUserToDatabase(userData);
+            addUserToDatabase(userData);
             return RegisterStatus.OK;
         }
 
@@ -200,7 +200,7 @@ namespace ProjektASPNET.Helpers
             return dummyUsers[userId].Login;
         }
 
-        private void AddUserToDatabase(LoginModel userData)
+        private void addUserToDatabase(LoginModel userData)
         {
             dummyLogins.Add(userData);
         }
