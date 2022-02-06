@@ -7,20 +7,20 @@ using System.Web;
 namespace ProjektASPNET.Helpers
 {
     public class DBHelper
-    {     
+    {
         public static DBHelper GetInstance()
         {
             if (helper == null)
                 return (helper = new DBHelper());
-           
+
             return helper;
         }
 
         public string GetUserRole(LoginModel userData)
         {
-            var allUsers = GetUsers();
+            var allUsers = GetUsersLogins();
             foreach (var user in allUsers)
-            {       
+            {
                 if (userData.Login == user.Login && userData.Password == user.Password)
                 {
                     if (user.Login == "Admin")
@@ -39,7 +39,7 @@ namespace ProjektASPNET.Helpers
             if (userData.Login.Length >= 50 || userData.Password.Length >= 50)
                 return RegisterStatus.LoginOrPasswordTooLong;
 
-            var allUsers = GetUsers();
+            var allUsers = GetUsersLogins();
             foreach (var user in allUsers)
                 if (userData.Login == user.Login)
                     return RegisterStatus.LoginAlreadyTaken;
@@ -82,7 +82,12 @@ namespace ProjektASPNET.Helpers
             return new ProductModel();
         }
 
-        public List<LoginModel> GetUsers()
+        public List<LoginModel> GetUsersLogins()
+        {
+            return dummyLogins;
+        }
+
+        public List<UserModel> GetUsers()
         {
             return dummyUsers;
         }
@@ -107,7 +112,7 @@ namespace ProjektASPNET.Helpers
                     return cart;
                 }
             }
-            return new OrderModel { User=userId, Products = new List<ProductModel>(), TotalPrice = 0 };
+            return new OrderModel { User = userId, Products = new List<ProductModel>(), TotalPrice = 0 };
         }
 
         public void AddToCart(int userId, ProductModel product)
@@ -134,10 +139,9 @@ namespace ProjektASPNET.Helpers
             product.ID = lastId++;
             dummyProducts.Add(product);
         }
-
         public void DeleteProduct(int productId)
         {
-            foreach(ProductModel prod in GetProducts())
+            foreach (ProductModel prod in GetProducts())
             {
                 if (prod.ID == productId)
                 {
@@ -198,17 +202,25 @@ namespace ProjektASPNET.Helpers
 
         private void AddUserToDatabase(LoginModel userData)
         {
-            dummyUsers.Add(userData);
+            dummyLogins.Add(userData);
         }
 
         private static DBHelper helper = null;
 
-        private List<LoginModel> dummyUsers = new List<LoginModel> {
+        private List<LoginModel> dummyLogins = new List<LoginModel> {
             new LoginModel {Login = "Admin", Password = "123456"},
             new LoginModel {Login = "Haniuś", Password = "hophop"},
             new LoginModel {Login = "Bartuś", Password = "miałmiał"},
             new LoginModel {Login = "Piotruś", Password = "hauhau"},
             new LoginModel {Login = "PowerRangers18", Password = "ninjastorm"}
+        };
+
+        private List<UserModel> dummyUsers = new List<UserModel> {
+            new UserModel {Login = "Admin", Role="Admin"},
+            new UserModel {Login = "Haniuś", Role = "User"},
+            new UserModel {Login = "Bartuś", Role = "User"},
+            new UserModel {Login = "Piotruś", Role = "User"},
+            new UserModel {Login = "PowerRangers18", Role = "User"}
         };
 
         private List<ProductModel> dummyProducts = new List<ProductModel> {

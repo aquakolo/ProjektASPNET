@@ -4,39 +4,39 @@
 }
 
 <h2>ProductDelete</h2>
-<table>
-    <tr>
-        <td>
-            Id zamówienia:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.ID)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Nazwa:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.Name)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Opis:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.Description)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Cena:
-        </td>
-        <td>
-            @Html.DisplayFor(model => model.Price)
-        </td>
-    </tr>
-</table>
-<button formmethod="post">Usuń</button>
+<form method="post">
+    <table>
+        <tr>
+            <td>
+               Id:
+            </td>
+            <td>
+                @Html.TextAreaFor(model => model.ID)
+            </td>
+            <td>
+                Nazwa:
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Opis:
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Description)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Cena:
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Price)
+            </td>
+        </tr>
+    </table>
+    <button>Usuń</button>
+</form>
 @Html.ActionLink("Cofnij", "ProductsView")

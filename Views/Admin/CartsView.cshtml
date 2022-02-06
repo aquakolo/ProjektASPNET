@@ -15,10 +15,10 @@
 <table>
     <tr>
         <th>
-            ID zamówienia
+            Użytkownik
         </th>
         <th>
-            Użytkownik
+            Produkty
         </th>
         <th>
             Sumaryczna cena
@@ -29,17 +29,11 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelOrder => order.ID)
-            </td>
-            <td>
                 @Html.DisplayFor(modelOrder => order.User)
             </td>
             <td>
                 <table>
                     <tr>
-                        <th>
-                            ID zamówienia
-                        </th>
                         <th>
                             Nazwa
                         </th>
@@ -51,12 +45,9 @@
                         </th>
                     </tr>
 
-                    @foreach (var item in order.Products)
+                    @foreach (ProjektASPNET.Models.ProductModel item in order.Products)
                     {
                         <tr>
-                            <td>
-                                @item.ID
-                            </td>
                             <td>
                                 @item.Name
                             </td>
@@ -67,7 +58,7 @@
                                 @item.Price
                             </td>
                             <td>
-                                @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID })
+                                @Html.ActionLink("Zobacz", "ProductSeen", new { productId = item.ID })
                             </td>
                         </tr>
                     }

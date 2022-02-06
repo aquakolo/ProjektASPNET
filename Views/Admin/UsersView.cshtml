@@ -17,9 +17,6 @@
 <table>
     <tr>
         <th>
-            ID zamówienia
-        </th>
-        <th>
             Użytkownik
         </th>
         <th>
@@ -31,19 +28,10 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Login)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Role)
-            </td>
-            <td>
-                @Html.ActionLink("Zobacz", "UserSeen", new { id = item.ID })
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "UserEdit", new { id = item.ID })
             </td>
         </tr>
     }

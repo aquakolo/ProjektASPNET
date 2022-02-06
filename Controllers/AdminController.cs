@@ -9,21 +9,21 @@ using System.Web.Mvc;
 
 namespace ProjektASPNET.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "ADMIN")]
     public class AdminController : Controller
     {
         // GET: Admin
         public ActionResult OrdersView()
         {
             var DB = DBHelper.GetInstance();
-            var OrdersList = DB.GetOrders();
-            return View(OrdersList);
+            var OrderList = DB.GetOrders();
+            return View(OrderList);
         }
 
         public ActionResult CartsView()
         {
             var DB = DBHelper.GetInstance();
-            var CartsList = new DB.GetCarts();
+            var CartsList = DB.GetCarts();
             return View(CartsList);
         }
 
@@ -67,9 +67,8 @@ namespace ProjektASPNET.Controllers
         [ActionName("ProductDelete")]
         public ActionResult ProductDeletePost(int id)
         {
-
             var DB = DBHelper.GetInstance();
-            DB.DeleteProduct(product.ID)
+            DB.DeleteProduct(id);
             return RedirectToAction("ProductsView");
         }
 

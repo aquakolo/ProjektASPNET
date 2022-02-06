@@ -30,23 +30,23 @@
 
     @foreach (var item in Model)
     {
-        @if (item.Hide == false)
+        if (item.Hide == false)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ID)
+                    @item.ID
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @item.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @item.Description
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @item.Price
                 </td>
                 <td>
-                    @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID })
+                    @Html.ActionLink("Zobacz", "ProductSeen", new { productId = item.ID })
                 </td>
                 <td>
                     @Html.ActionLink("Usuń", "ProductDelete", new { id = item.ID })

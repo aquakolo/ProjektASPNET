@@ -18,7 +18,7 @@
         </th>
     </tr>
 
-    @foreach (var item in Model.Products)
+    @foreach (ProjektASPNET.Models.ProductModel item in Model.Products)
     {
         <tr>
             <td>
@@ -30,7 +30,7 @@
             <td>
                 @item.Price
             </td>
-            <td> 
+            <td>
                 @Html.ActionLink("Usuń z koszyka", "DeleteFromCartView", new ProjektASPNET.Models.ProductModel { ID = item.ID, Name = "" })
             </td>
         </tr>

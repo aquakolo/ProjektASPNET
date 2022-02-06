@@ -52,7 +52,7 @@ namespace ProjektASPNET.Controllers
             //@ViewBag.LastAction = "";
             //var SessionHelper = ProjektASPNET.Helpers.SessionHelper.GetInstance(); 
             var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
-            var cart = DB.GetUserCart(0); // tu będzie inne niż 0 
+            OrderModel cart = DB.GetUserCart(0); // tu będzie inne niż 0 
             return View(cart);
         }
 

@@ -27,13 +27,11 @@
                 Cena:
             </td>
             <td>
-                @Html.ValueFor(model => model.Price)
+                @Html.EditorFor(model => model.Price)
             </td>
         </tr>
-        <tr>
-            <button>Stwórz</button>
-        </tr>
     </table>
+    <button>Stwórz</button>
 </form>
 
 @Html.ActionLink("Cofnij", "ProductsView")
