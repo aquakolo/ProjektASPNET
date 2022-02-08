@@ -13,7 +13,7 @@
     Opis: @Model.Description
 </div>
 <div>
-    Cena: @Model.Price
+    Cena: @Model.Price.ToString().Substring(0, Model.Price.ToString().Length - 2),@Model.Price.ToString().Substring(Model.Price.ToString().Length - 2, 2) zł
 </div>
 
 <div>

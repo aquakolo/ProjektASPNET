@@ -19,8 +19,6 @@ namespace ProjektASPNET.Controllers
             return View(model);
         }
 
-        // zalogowany
-        //[Authorize(Roles = "ADMIN,  USER")]
         [HttpPost]
         public ActionResult Index(HomeModel model)
         {
@@ -46,52 +44,73 @@ namespace ProjektASPNET.Controllers
             return View(product);
         }
 
-        //[Authorize(Roles = "ADMIN,  USER")]
+        [Authorize(Roles = "ADMIN,  USER")]
         public ActionResult CartView()
         {
-            //@ViewBag.LastAction = "";
-            //var SessionHelper = ProjektASPNET.Helpers.SessionHelper.GetInstance(); 
-            var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
-            OrderModel cart = DB.GetUserCart(0); // tu będzie inne niż 0 
+            var DB = DBHelper.GetInstance();
+            OrderModel cart = DB.GetUserCart(DB.GetIdFromLogin(User.Identity.Name));
             return View(cart);
         }
 
-       // [Authorize(Roles = "ADMIN,  USER")]
+        [Authorize(Roles = "ADMIN,  USER")]
         public ActionResult DeleteFromCartView(ProductModel product)
         {
            if (String.IsNullOrEmpty(product.Name))
             {
-                var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
+                var DB = DBHelper.GetInstance();
                 var prod = DB.GetProduct(product.ID);
                 return View(prod);
             }
             else
             {
-                var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
-                DB.removeFromCart(0, product);
+                var DB = DBHelper.GetInstance();
+                DB.removeFromCart(DB.GetIdFromLogin(User.Identity.Name), product);
                 return RedirectToAction("CartView");
             }
         }
 
-        //[Authorize(Roles = "ADMIN,  USER")]
+        [Authorize(Roles = "ADMIN,  USER")]
         public ActionResult AddToCartView(int id)
         {
-            //@ViewBag.LastAction = "";
-            var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
+            var DB = DBHelper.GetInstance();
             var prod = DB.GetProduct(id);
             return View(prod);
         }
 
-        //[Authorize(Roles = "ADMIN,  USER")]
+        [Authorize(Roles = "ADMIN,  USER")]
         [HttpPost]
         [ActionName("AddToCartView")]
         public ActionResult AddToCartViewPost(int id)
         {
-            var DB = ProjektASPNET.Helpers.DBHelper.GetInstance();
+            var DB = DBHelper.GetInstance();
             var product = DB.GetProduct(id);
-            DB.AddToCart(0, product); // tu też będzie inne niż 0
-                                          //@ViewBag.LastAction = "Dodano produkt do koszyka pomyślnie";
-                return RedirectToAction("Index");
+            DB.AddToCart(DB.GetIdFromLogin(User.Identity.Name), product); 
+                                          
+            return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "ADMIN,  USER")]
+        public ActionResult MakeOrderView()
+        {
+            var DB = DBHelper.GetInstance();
+            var cart = DB.GetUserCart(DB.GetIdFromLogin(User.Identity.Name));
+
+            return View(cart);
+        }
+
+        [Authorize(Roles = "ADMIN,  USER")]
+        [HttpPost]
+        public ActionResult MakeOrderView(int? blank)
+        {
+            var DB = DBHelper.GetInstance();
+            var id = DB.GetIdFromLogin(User.Identity.Name);
+            var cart = DB.GetUserCart(id);
+            DB.AddOrder(cart);
+            DB.ClearCart(id);
+
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

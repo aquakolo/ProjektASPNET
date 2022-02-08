@@ -4,35 +4,44 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Home Page</h2>
-
-
-<div style="width: 100%">
-    @Html.ActionLink("Strona główna", "../Home/Index")
-
-    @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) == "Admin")
+@if (User.Identity.IsAuthenticated)
+{
+    if (User.IsInRole("ADMIN"))
     {
-        Html.ActionLink("Lista zamówień", "../Admin/OrdersView");
-        Html.ActionLink("Lista użytkowników", "../Admin/UsersView");
-        Html.ActionLink("Lista koszyków", "../Admin/CartsView");
-        Html.ActionLink("Lista produktów", "../Admin/ProductsView");
+        <div>
+            @Html.ActionLink("Lista zamówień", "../Admin/OrdersView")
+            <label> </label>
+            @Html.ActionLink("Lista użytkowników", "../Admin/UsersView")
+            <label> </label>
+            @Html.ActionLink("Lista produktów", "../Admin/ProductsView")
+            <label> </label>
+            @Html.ActionLink("Lista koszyków", "../Admin/CartsView")
+        </div>
     }
+    <div>
+        Dzień dobry @User.Identity.Name!
+        <label>  </label>
+        @Html.ActionLink("Wyloguj", "../Login/LogoutView")
+    </div>
+}
+@if (!User.Identity.IsAuthenticated)
+{
+    <div>
+        @Html.ActionLink("Login", "../Login/LoginView")
+        <label> </label>
+        @Html.ActionLink("Register", "../Login/RegisterView")
+    </div>
+}
 
-    @if (DBHelper.GetInstance().GetUserRole(new ProjektASPNET.Models.LoginModel()) == "NotLogged")
-    {
-        Html.ActionLink("Login", "../Login/LoginView");
-        Html.ActionLink("Register", "../Login/RegisterView");
-    }
-</div>
-
-
+<h2>Sklep</h2>
 
 <form method="POST">
-    <br>
     Wyszukaj produktów: @Html.TextBoxFor(m => m.Search)
-    <br>
+    <br />
+    <br />
+
 </form>
-<table>
+<table class="body-content">
     <tr>
         <th>
             Nazwa
@@ -47,27 +56,35 @@
 
     @foreach (var item in Model.Products)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.ActionLink("Zobacz", "ProductSeen", new { productId = item.ID })
-            </td>
-            <td>
-
-                @Html.ActionLink("Dodaj do koszyka", "AddToCartView", new { id = item.ID })
-            </td>
-        </tr>
+        if (item.Hide == false)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @item.Price.ToString().Substring(0, item.Price.ToString().Length - 2),@item.Price.ToString().Substring(item.Price.ToString().Length - 2, 2) zł
+                </td>
+                <td>
+                    @Html.ActionLink("Zobacz", "ProductSeen", new { productId = item.ID }, new { @class = "my-class" })
+                </td>
+                <td>
+                    @if (User.IsInRole("USER"))
+                    {
+                        @Html.ActionLink("Dodaj do koszyka", "AddToCartView", new { id = item.ID }, new { @class = "my-class" })
+                    }
+                </td>
+            </tr>
+        }
     }
 </table>
 <div>
-    @Html.ActionLink("Podsumowanie koszyka", "CartView")
+    @if (User.IsInRole("USER"))
+    {
+        @Html.ActionLink("Podsumowanie koszyka", "CartView")
+    }
 </div>
 

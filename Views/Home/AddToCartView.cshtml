@@ -3,7 +3,8 @@
     ViewBag.Title = "AddToCartView";
 }
 
-    <h2>Czy na pewno chcesz dodać produkt do koszyka?</h2>
+<h2>Czy na pewno chcesz dodać produkt do koszyka?</h2>
+
 <form method="post">
     <div>
         Nazwa: @Model.Name
@@ -12,7 +13,7 @@
         Opis: @Model.Description
     </div>
     <div>
-        Cena: @Model.Price
+        Cena: @Model.Price.ToString().Substring(0, Model.Price.ToString().Length - 2),@Model.Price.ToString().Substring(Model.Price.ToString().Length - 2, 2) zł
     </div>
     <div>
         <button>Tak</button>

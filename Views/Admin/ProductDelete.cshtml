@@ -3,16 +3,19 @@
     ViewBag.Title = "ProductDelete";
 }
 
-<h2>ProductDelete</h2>
+<h2>Czy na pewno chcesz usunąć ten produkt?</h2>
+
 <form method="post">
-    <table>
+    <table class="body-content">
         <tr>
             <td>
                Id:
             </td>
             <td>
-                @Html.TextAreaFor(model => model.ID)
+                @Html.DisplayFor(model => model.ID)
             </td>
+        </tr>
+        <tr>
             <td>
                 Nazwa:
             </td>
@@ -33,10 +36,10 @@
                 Cena:
             </td>
             <td>
-                @Html.DisplayFor(model => model.Price)
+                @Model.Price.ToString().Substring(0, Model.Price.ToString().Length - 2),@Model.Price.ToString().Substring(Model.Price.ToString().Length - 2, 2) zł
             </td>
         </tr>
     </table>
-    <button>Usuń</button>
+    <button>Tak</button>
 </form>
-@Html.ActionLink("Cofnij", "ProductsView")
+@Html.ActionLink("Powrót", "ProductsView")

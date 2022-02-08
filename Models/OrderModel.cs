@@ -10,6 +10,6 @@ namespace ProjektASPNET.Models
         public int ID { get; set; }
         public int User { get; set; }
         public List<ProductModel> Products { get; set; }
-        public double TotalPrice { get; set; }
+        public int TotalPrice { get; set; }
     }
 }

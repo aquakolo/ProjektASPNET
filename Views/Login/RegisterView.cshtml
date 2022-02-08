@@ -3,10 +3,9 @@
     ViewBag.Title = "RegisterView";
 }
 
-<h2>RegisterView</h2>
+<h2>Strona rejestracji</h2>
 
 <form method="POST">
-
     <table>
         <tr>
             <td>Login:</td>
@@ -17,19 +16,13 @@
             <td>@Html.PasswordFor(m => m.Password)</td>
         </tr>
         <tr>
-            <td>Powtórz hasło</td>
+            <td>Powtórz hasło:</td>
             <td>@Html.PasswordFor(m => m.Password2)</td>
         </tr>
-        <tr>
-            <td colspan="2">
-                @Html.ValidationSummary()
-            </td>
-
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <button>Zarejestruj</button>
-            </td>
-        </tr>
     </table>
+
+     @Html.ValidationSummary()
+
+    <button>Zarejestruj</button>
+
 </form>

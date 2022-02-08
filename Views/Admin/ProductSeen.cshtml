@@ -3,9 +3,9 @@
     ViewBag.Title = "ProductSeen";
 }
 
-<h2>ProductSeen</h2>
+<h2>Opis produktu</h2>
 
-<table>
+<table class="body-content">
     <tr>
         <td>
             Id produktu:
@@ -35,10 +35,10 @@
             Cena:
         </td>
         <td>
-            @Html.DisplayFor(model => model.Price)
+            @Model.Price.ToString().Substring(0, Model.Price.ToString().Length - 2),@Model.Price.ToString().Substring(Model.Price.ToString().Length - 2, 2) zł
         </td>
     </tr>
     <tr>
-        @Html.ActionLink("Cofnij", "ProductsView")
+        @Html.ActionLink("Powrót", "ProductsView")
     </tr>
 </table>

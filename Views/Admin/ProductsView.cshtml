@@ -3,7 +3,7 @@
     ViewBag.Title = "ProductsView";
 }
 
-<h2>ProductsView</h2>
+<h2>Lista produktów</h2>
 
 <div style="width: 100%">
     @Html.ActionLink("Strona główna", "../Home/Index")
@@ -11,8 +11,9 @@
     @Html.ActionLink("Lista użytkowników", "../Admin/UsersView")
     @Html.ActionLink("Lista koszyków", "../Admin/CartsView")
 </div>
+<br />
 
-<table>
+<table class="body-content">
     <tr>
         <th>
             ID Produktu
@@ -34,22 +35,22 @@
         {
             <tr>
                 <td>
-                    @item.ID
+                    @Html.DisplayFor(modelItem => item.ID)
                 </td>
                 <td>
-                    @item.Name
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @item.Description
+                    @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    @item.Price
+                    @item.Price.ToString().Substring(0, item.Price.ToString().Length - 2),@item.Price.ToString().Substring(item.Price.ToString().Length - 2, 2) zł
                 </td>
                 <td>
-                    @Html.ActionLink("Zobacz", "ProductSeen", new { productId = item.ID })
+                    @Html.ActionLink("Zobacz", "ProductSeen", new { productId = item.ID }, new { @class = "my-class" })
                 </td>
                 <td>
-                    @Html.ActionLink("Usuń", "ProductDelete", new { id = item.ID })
+                    @Html.ActionLink("Usuń", "ProductDelete", new { id = item.ID }, new { @class = "my-class" })
                 </td>
             </tr>
         }

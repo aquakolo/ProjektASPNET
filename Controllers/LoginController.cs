@@ -8,6 +8,7 @@ using System.Security.Claims;
 //using System.IdentityModel.Services;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ProjektASPNET.Controllers
 {
@@ -17,7 +18,7 @@ namespace ProjektASPNET.Controllers
         public ActionResult LoginView(string registered = null)
         {
             if (registered == "true")
-                @ViewBag.Message = "Zarejestrowano pomyślnie";
+                @ViewBag.Message = "Zarejestrowano pomyślnie!";
 
             LoginModel model = new LoginModel();
             return View(model);
@@ -30,19 +31,15 @@ namespace ProjektASPNET.Controllers
             {
                 var DB = DBHelper.GetInstance();
                 string role = DB.GetUserRole(model); // Helpers
-                if (role != "NotLogged")
+                if (role != "NOTLOGGED")
                 {
-                    /*
-                    var identity = new ClaimsIdentity("userIdentity");
-                    identity.AddClaim(new Claim(ClaimTypes.Name, model.Login));
-                    identity.AddClaim(new Claim(ClaimTypes.Name, role));
-                    var principal = new ClaimsPrincipal(identity);
-                    SessionAuthenticationModule sam = FederatedAuthentication.SessionAuthenticationModule;
-                    var token = sam.CreateSessionSecurityToken(principal,
-                        string.Empty, DateTime.Now.ToUniversalTime(), DateTime.Now.AddMinutes(20).ToUniversalTime(), false);
-                    sam.WriteSessionTokenToCookie(token);
-                    */
+                    var ticket = new FormsAuthenticationTicket(model.Login, true, 3000);
+                    string encrypt = FormsAuthentication.Encrypt(ticket);
+                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypt);
+                    cookie.Expires = DateTime.Now.AddHours(1000);
+                    cookie.HttpOnly = true;
 
+                    Response.Cookies.Add(cookie);
 
                     return RedirectToAction("../Home/Index");
 
@@ -85,6 +82,12 @@ namespace ProjektASPNET.Controllers
                 }
             }
             return View(model);
+        }
+
+        public ActionResult LogoutView()
+        {
+            FormsAuthentication.SignOut();
+            return View();
         }
     }
 }

@@ -2,9 +2,46 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
+    <style>
+        html * {
+            font-size: 1em !important;
+            color: black !important;
+            background-color: cornsilk;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+        table, th, td {
+            border-collapse: collapse;
+            border: 1px solid black;
+            background-color: aliceblue !important;
+        }
+        a:link, a:visited {
+            color: mediumblue;
+            text-decoration-color: mediumblue;
+        }
+        a.my-class:link, a.my-class:visited {
+            background-color: aliceblue;
+        }
+        input {
+            background-color: antiquewhite;
+        }
+        textarea {
+            background-color: antiquewhite;
+            width: 97%;
+            height: 40px;
+        }
+        table.my-style {
+            width: 100%;
+        }
+        button {
+            background-color: aliceblue;
+        }
+       
+        
+               
+    </style>
 </head>
 <body>
-    @RenderBody()
+     @RenderBody()
 </body>
 </html>

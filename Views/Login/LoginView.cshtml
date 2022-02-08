@@ -3,22 +3,26 @@
     ViewBag.Title = "LoginView";
 }
 
+<h2>Strona logowania</h2>
+
 <div id="registrationMessage"></div>
 @ViewBag.Message
-<h2>Login Page</h2>
+
 
 <form method="POST">
-    <div>
-        Login: @Html.TextBoxFor(m => m.Login)
-    </div>
-    <div>
-        Hasło: @Html.PasswordFor(m => m.Password)
-    </div>
-    <div>
-        @Html.ValidationSummary()
-    </div>
-    <div>
-        <button>Zaloguj!</button>
-    </div>
-    <div>Nie masz konta? <a href="RegisterView">zarejestruj się.</div>
+    <table>
+        <tr>
+            <td>Login:</td>
+            <td>@Html.TextBoxFor(m => m.Login)</td>
+        </tr>
+        <tr>
+            <td>Hasło:</td>
+            <td>@Html.PasswordFor(m => m.Password)</td>
+        </tr>
+    </table>
+
+    @Html.ValidationSummary()
+
+    <button>Zaloguj</button>
+
 </form>

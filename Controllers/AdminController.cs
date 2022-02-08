@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace ProjektASPNET.Controllers
 {
-    //[Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN")]
     public class AdminController : Controller
     {
         // GET: Admin

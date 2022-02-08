@@ -16,19 +16,29 @@ namespace ProjektASPNET.Helpers
             return helper;
         }
 
+        // poprawa (czek)
         public string GetUserRole(LoginModel userData)
         {
-            var allUsers = GetUsersLogins();
-            foreach (var user in allUsers)
+            return GetUserRole(userData.Login);
+        }
+
+        // poprawa (czek)
+        public string GetUserRole(string username)
+        {
+            using (DB db = new DB())
             {
-                if (userData.Login == user.Login && userData.Password == user.Password)
-                {
-                    if (user.Login == "Admin")
-                        return "Admin";
-                    return "User";
-                }
+                var records = (from u in db.Users
+                               where u.Username == username
+                               select new
+                               {
+                                   UserRole = u.Role
+                               }).ToList();
+
+                if (records.Count != 0)
+                    return records[0].UserRole;
+                
+                return "NOTLOGGED";
             }
-            return "NotLogged";
         }
 
         public RegisterStatus RegisterUser(LoginModel userData)
@@ -50,7 +60,17 @@ namespace ProjektASPNET.Helpers
 
         public List<ProductModel> GetProducts()
         {
-            return dummyProducts;
+            List<ProductModel> products = new List<ProductModel>();
+            using (DB db = new DB())
+            {
+                var prodSet = db.Products;
+                foreach (var product in prodSet)
+                {
+                    products.Add(new ProductModel { ID = product.ProductID, Name = product.Name, Description = product.Description, 
+                                                    Price = product.Price, Hide = product.Hide });
+                }
+            }
+            return products;
         }
 
         public List<ProductModel> GetProducts(string str)
@@ -71,167 +91,223 @@ namespace ProjektASPNET.Helpers
 
         public ProductModel GetProduct(int id)
         {
-            var products = GetProducts();
-            foreach (var product in products)
+            DBProduct product;
+            using (DB db = new DB())
             {
-                if (product.ID == id)
-                {
-                    return product;
-                }
+                product = db.Products.Find(id);
             }
-            return new ProductModel();
+            if (product == null)
+                return new ProductModel();
+
+            return new ProductModel { ID = product.ProductID, Name = product.Name, Description = product.Description, Price = product.Price, Hide = product.Hide };
         }
 
         public List<LoginModel> GetUsersLogins()
         {
-            return dummyLogins;
+            List<LoginModel> users = new List<LoginModel>();
+            using (DB db = new DB())
+            {
+                foreach (var user in db.Users)
+                {
+                    users.Add(new LoginModel { Login = user.Username, Password = user.Password });
+                }
+            }
+            return users;
         }
 
         public List<UserModel> GetUsers()
         {
-            return dummyUsers;
+            List<UserModel> users = new List<UserModel>();
+            using (DB db = new DB())
+            {
+                foreach (var user in db.Users)
+                {
+                    users.Add(new UserModel { Login = user.Username, Role = user.Role });
+                }
+            }
+            return users;
         }
 
+        public List<ProductModel> GetProductsListFromString(string productsString)
+        {
+            List<ProductModel> productModels = new List<ProductModel>();
+            var stringList = productsString.Split(',');
+            foreach (string item in stringList)
+            {
+                if (String.IsNullOrEmpty(item))
+                    continue;
+
+                productModels.Add(this.GetProduct(int.Parse(item)));
+            }
+            return productModels;
+        }
+
+        public int GetTotalPrice(List<ProductModel> productModels)
+        {
+            int totalPrice = 0;
+            foreach (var product in productModels)
+            {
+                totalPrice += product.Price;
+            }
+            return totalPrice;
+        }
+
+        // poprawa częściowa (czek)
         public List<OrderModel> GetOrders()
         {
-            return dummyOrders;
+            List<OrderModel> orders = new List<OrderModel>();
+            using (DB db = new DB())
+            {
+                foreach (var order in db.Orders)
+                {
+                    var products = GetProductsListFromString(order.ProductsIDList);
+                    orders.Add(new OrderModel { ID = order.OrderID, User = order.UserID, Products = products, TotalPrice = GetTotalPrice(products)}); 
+                }
+            }
+            return orders;
         }
 
         public List<OrderModel> GetCarts()
         {
-            return dummyCarts;
+            var users = GetUsers();
+            List<OrderModel> list = new List<OrderModel>();
+            foreach(var user in users)
+            {
+                var cart = GetUserCart(GetIdFromLogin(user.Login));
+                if (cart.Products.Count != 0)
+                    list.Add(cart);
+            }
+            return list;
+        }
+
+        public int GetIdFromLogin(string login)
+        {
+            using (DB db = new DB())
+            {
+                var records = (from u in db.Users
+                               where u.Username == login
+                               select new
+                               {
+                                   UserID = u.UserID
+                               }).ToList();
+
+                return records[0].UserID;
+            }
+            
         }
 
         public OrderModel GetUserCart(int userId)
         {
-            var carts = GetCarts();
-            foreach (var cart in carts)
+            OrderModel cart = new OrderModel();
+            cart.Products = new List<ProductModel>();
+            using(DB db = new DB())
             {
-                if (cart.User == userId)
+                var records = (from c in db.Carts
+                               join p in db.Products
+                               on c.ProductID equals p.ProductID
+                               where c.UserID == userId
+                               select new
+                               {
+                                   CartID = c.CartID,
+                                   UserID = c.UserID,
+                                   ProductID = p.ProductID,
+                                   ProductName = p.Name,
+                                   ProductDescription = p.Description,
+                                   ProductPrice = p.Price,
+                                   ProductHide = p.Hide
+                               }).ToList();
+                foreach (var record in records)
                 {
-                    return cart;
+                    cart.ID = record.CartID;
+                    cart.TotalPrice += record.ProductPrice;
+                    cart.User = record.UserID;
+                    cart.Products.Add(new ProductModel { ID = record.ProductID, Name = record.ProductName, Description = record.ProductDescription, Price = record.ProductPrice, Hide = record.ProductHide });
                 }
             }
-            return new OrderModel { User = userId, Products = new List<ProductModel>(), TotalPrice = 0 };
+            return cart;
         }
+
+        // poprawa (czek)
+        public void ClearCart(int id)
+        {
+            var userCart = GetUserCart(id).Products;
+            foreach (var item in userCart)
+            {
+                removeFromCart(id, item);
+            }
+        }
+
+        // poprawa (czek)
+        public void AddOrder(OrderModel cart)
+        {
+            using(DB db = new DB())
+            {
+                var products = GetStringFromProductsList(cart.Products);
+                db.Orders.Add(new DBOrder { UserID = cart.User, ProductsIDList = products });
+                db.SaveChanges();
+            }            
+        }
+
 
         public void AddToCart(int userId, ProductModel product)
         {
-            var carts = GetCarts();
-            foreach (var cart in carts)
+            using (DB db = new DB())
             {
-                if (cart.User == userId)
-                {
-                    cart.Products.Add(product);
-                    cart.TotalPrice += product.Price;
-                    return;
-                }
+                db.Carts.Add(new DBCart { UserID = userId, ProductID = product.ID });
+                db.SaveChanges();
             }
-            var n = new OrderModel { ID = 0, User = userId, Products = new List<ProductModel>(), TotalPrice = 0 };
-            n.Products.Add(product);
-            n.TotalPrice = product.Price;
-            carts.Add(n);
         }
-
-        static int lastId = 5;
         public void AddProduct(ProductModel product)
         {
-            product.ID = lastId++;
-            dummyProducts.Add(product);
+            using(DB db = new DB())
+            {
+                db.Products.Add(new DBProduct { Name = product.Name, Description = product.Description, Price = product.Price, Hide = false });
+                db.SaveChanges();
+            }
         }
         public void DeleteProduct(int productId)
         {
-            foreach (ProductModel prod in GetProducts())
+            using (DB db = new DB())
             {
-                if (prod.ID == productId)
-                {
-                    prod.Hide = true;
-                    return;
-                }
+                db.Products.Find(productId).Hide = true;
+                db.SaveChanges();
             }
         }
 
+        // poprawa (czek)
         public void removeFromCart(int userId, ProductModel product)
         {
-            OrderModel model = null;
-            var carts = GetCarts();
-            foreach (var cart in carts)
+            using (DB db = new DB())
             {
-                if (cart.User == userId)
-                {
-                    model = cart;
-                }
+                var cart = db.Carts.First(c => (c.UserID == userId && c.ProductID == product.ID));
+                db.Carts.Attach(cart);
+                db.Carts.Remove(cart);
+                db.SaveChanges();
             }
-
-            for (int i = 0; i < model.Products.Count; i++)
-            {
-                if (product.ID == model.Products[i].ID)
-                {
-                    model.Products.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-
-        public void removeFromCart(int userId, int id)
-        {
-            OrderModel model = null;
-            var carts = GetCarts();
-            foreach (var cart in carts)
-            {
-                if (cart.User == userId)
-                {
-                    model = cart;
-                }
-            }
-
-            for (int i = 0; i < model.Products.Count; i++)
-            {
-                if (id == model.Products[i].ID)
-                {
-                    model.Products.RemoveAt(i);
-                    return;
-                }
-            }
-        }
-
-        public string getUserNameFromId(int userId)
-        {
-            return dummyUsers[userId].Login;
         }
 
         private void addUserToDatabase(LoginModel userData)
         {
-            dummyLogins.Add(userData);
+            using(DB db = new DB())
+            {
+                var newUser = new DBUser { Username = userData.Login, Password = userData.Password, Role = "USER" };
+                db.Users.Add(newUser);
+                db.SaveChanges();
+            }
+        }
+        // poprawa (czek)
+        private string GetStringFromProductsList(List<ProductModel> products)
+        {
+            string productsString = "";
+            foreach(var item in products)
+            {
+                productsString += item.ID.ToString();
+                productsString += ",";
+            }
+
+            return productsString;
         }
 
         private static DBHelper helper = null;
-
-        private List<LoginModel> dummyLogins = new List<LoginModel> {
-            new LoginModel {Login = "Admin", Password = "123456"},
-            new LoginModel {Login = "Haniuś", Password = "hophop"},
-            new LoginModel {Login = "Bartuś", Password = "miałmiał"},
-            new LoginModel {Login = "Piotruś", Password = "hauhau"},
-            new LoginModel {Login = "PowerRangers18", Password = "ninjastorm"}
-        };
-
-        private List<UserModel> dummyUsers = new List<UserModel> {
-            new UserModel {Login = "Admin", Role="Admin"},
-            new UserModel {Login = "Haniuś", Role = "User"},
-            new UserModel {Login = "Bartuś", Role = "User"},
-            new UserModel {Login = "Piotruś", Role = "User"},
-            new UserModel {Login = "PowerRangers18", Role = "User"}
-        };
-
-        private List<ProductModel> dummyProducts = new List<ProductModel> {
-            new ProductModel { ID = 1, Name = "Buty Nike XXL", Description = "markowe buty nike", Price = 35800},
-            new ProductModel { ID = 2, Name = "Czekolada", Description = "najlepsza czekolada na świecie pozdro", Price = 1250},
-            new ProductModel { ID = 3, Name = "Palma japońska", Description = "ładna palma doniczkowa do twojego domu", Price = 5000},
-            new ProductModel { ID = 4, Name = "Figurka Matki Boskiej", Description = "Figurka Matki Boskiej, podświetlana LED RGB", Price = 9599}
-        };
-
-        private List<OrderModel> dummyCarts = new List<OrderModel>();
-
-        private List<OrderModel> dummyOrders = new List<OrderModel>();
     }
 }

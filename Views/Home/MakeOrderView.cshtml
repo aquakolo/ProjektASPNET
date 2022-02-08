@@ -1,9 +1,11 @@
 ﻿@model ProjektASPNET.Models.OrderModel
 @{
-    ViewBag.Title = "CartView";
+    ViewBag.Title = "MakeOrderView";
 }
 
-<h2>Twój koszyk</h2>
+<h2>Czy na pewno chcesz złożyć takie zamówienie?</h2>
+
+<form method="POST">
 
 <table class="body-content">
     <tr>
@@ -31,14 +33,19 @@
                 @item.Price.ToString().Substring(0, item.Price.ToString().Length - 2),@item.Price.ToString().Substring(item.Price.ToString().Length - 2, 2) zł
             </td>
             <td>
-                @Html.ActionLink("Usuń z koszyka", "DeleteFromCartView", new ProjektASPNET.Models.ProductModel { ID = item.ID, Name = "" }, new { @class = "my-class" })
+                @Html.ActionLink("Zobacz", "ProductSeen", new { id = item.ID }, new { @class = "my-class" })
             </td>
         </tr>
     }
 </table>
-<div>
-    @Html.ActionLink("Złóż zamówienie", "MakeOrderView")
-</div>
+    <div>
+        Kwota całkowita do zapłacenia: @Model.TotalPrice.ToString().Substring(0, Model.TotalPrice.ToString().Length - 2),@Model.TotalPrice.ToString().Substring(Model.TotalPrice.ToString().Length - 2, 2) zł
+    </div>
+    <div>
+        <button>Tak</button>
+    </div>
+</form>
 <div>
     @Html.ActionLink("Powrót", "Index")
 </div>
+
